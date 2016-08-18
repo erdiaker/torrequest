@@ -9,12 +9,6 @@ from torrequest import TorRequest
 with TorRequest() as tr:
   response = tr.get('http://ipecho.net/plain')
   print(response.text)  # not your IP address
-
-  tr.reset_identity()
- 
-  response = tr.get('http://ipecho.net/plain')
-  print(response.text)  # not your IP address, 
-                        # and most likely not the one above either
 ```
 
 It's basically a wrapper around [Stem](https://stem.torproject.org) and
@@ -46,6 +40,7 @@ from torrequest import TorRequest
 # Otherwise, it will create a new Tor process, 
 # and terminate it at the end.
 with TorRequest(proxy_port=9050, ctrl_port=9051, password=None) as tr:
+
   # Specify HTTP verb and url.
   resp = tr.get('http://google.com')
   print(resp.text)
@@ -55,18 +50,21 @@ with TorRequest(proxy_port=9050, ctrl_port=9051, password=None) as tr:
     data={'foo': 'bar'}, auth=('user', 'pass'))'
   print(resp.json)
 
-  # Reset your Tor identity wheneter you want. 
+  # Reset your Tor identity whenever you want. 
+  # This is likely to change your IP address.
   tr.reset_identity()
 
-  # TorRequest object also exposes the underlying stem controller 
-  # and requests session objects for more flexibility.
+  # TorRequest object also exposes the underlying Stem controller 
+  # and Requests session objects for more flexibility.
+
   print(type(tr.ctrl))            # a stem.control.Controller object
-  tr.ctrl.signal('CLEARDNSCACHE') # check Stem docs for the full API
+  tr.ctrl.signal('CLEARDNSCACHE') # see Stem docs for the full API
 
   print(type(tr.session))         # a requests.Session object
   c = cookielib.CookieJar()
-  tr.session.cookies.update(c)    # check requests docs for the full API
+  tr.session.cookies.update(c)    # see Requests docs for the full API
 ```
 
 ## License
 MIT
+
