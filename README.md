@@ -50,8 +50,8 @@ with TorRequest(proxy_port=9050, ctrl_port=9051, password=None) as tr:
     data={'foo': 'bar'}, auth=('user', 'pass'))'
   print(resp.json)
 
-  # Reset your Tor identity whenever you want. 
-  # This is likely to change your IP address.
+  # Change your Tor circuit,
+  # and likely your observed IP address.
   tr.reset_identity()
 
   # TorRequest object also exposes the underlying Stem controller 
