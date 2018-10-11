@@ -26,7 +26,7 @@ class TorRequest(object):
     self.session = requests.Session()
     self.session.proxies.update({
       'http': 'socks5://localhost:%d' % self.proxy_port,
-      'https:': 'socks5://localhost:%d' % self.proxy_port,
+      'https': 'socks5://localhost:%d' % self.proxy_port,
     })
 
   def _tor_process_exists(self):
