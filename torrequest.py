@@ -4,7 +4,7 @@ from stem.control import Controller
 from stem.process import launch_tor_with_config
 
 import requests
-import json
+
 import time
 
 class TorRequest(object):
@@ -59,8 +59,8 @@ class TorRequest(object):
 
   def get_identity(self):
     identity = self.get(url="https://httpbin.org/ip",
-                        headers={'Connection':'close'}).text.strip()
-    return json.loads(identity)['origin']
+                        headers={'Connection':'close'}).json()
+    return identity['origin']
 
   def reset_identity_async(self):
     self.ctrl.signal(stem.Signal.NEWNYM)
