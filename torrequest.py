@@ -4,18 +4,18 @@ from stem.control import Controller
 from stem.process import launch_tor_with_config
 
 import requests
-
+import json
 import time
 
 class TorRequest(object):
-  def __init__(self, 
-      proxy_port=9050, 
+  def __init__(self,
+      proxy_port=9050,
       ctrl_port=9051,
       password=None):
 
     self.proxy_port = proxy_port
     self.ctrl_port = ctrl_port
-    
+
     self._tor_proc = None
     if not self._tor_process_exists():
       self._tor_proc = self._launch_tor()
@@ -46,16 +46,21 @@ class TorRequest(object):
       take_ownership=True)
 
   def close(self):
-    try: 
+    try:
       self.session.close()
     except: pass
 
-    try: 
+    try:
       self.ctrl.close()
     except: pass
 
     if self._tor_proc:
       self._tor_proc.terminate()
+
+  def get_identity(self):
+    identity = self.get(url="https://httpbin.org/ip",
+                        headers={'Connection':'close'}).text.strip()
+    return json.loads(identity)['origin']
 
   def reset_identity_async(self):
     self.ctrl.signal(stem.Signal.NEWNYM)
@@ -75,7 +80,7 @@ class TorRequest(object):
 
   def patch(self, *args, **kwargs):
     return self.session.patch(*args, **kwargs)
-    
+
   def delete(self, *args, **kwargs):
     return self.session.delete(*args, **kwargs)
 
@@ -84,4 +89,3 @@ class TorRequest(object):
 
   def __exit__(self, *args):
     self.close()
-
