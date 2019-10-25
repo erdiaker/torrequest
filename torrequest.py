@@ -11,10 +11,12 @@ class TorRequest(object):
   def __init__(self, 
       proxy_port=9050, 
       ctrl_port=9051,
-      password=None):
+      password=None,
+      tor_cmd='tor'):
 
     self.proxy_port = proxy_port
     self.ctrl_port = ctrl_port
+    self.tor_cmd = tor_cmd
     
     self._tor_proc = None
     if not self._tor_process_exists():
@@ -43,6 +45,7 @@ class TorRequest(object):
         'SocksPort': str(self.proxy_port),
         'ControlPort': str(self.ctrl_port)
       },
+      tor_cmd=self.tor_cmd,
       take_ownership=True)
 
   def close(self):
