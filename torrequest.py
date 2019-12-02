@@ -11,14 +11,14 @@ class TorRequest(object):
   def __init__(self, 
       proxy_port=9050, 
       ctrl_port=9051,
-      password=None):
+      password=None,tor_cmd=None):
 
     self.proxy_port = proxy_port
     self.ctrl_port = ctrl_port
     
     self._tor_proc = None
     if not self._tor_process_exists():
-      self._tor_proc = self._launch_tor()
+      self._tor_proc = self._launch_tor(tor_cmd)
 
     self.ctrl = Controller.from_port(port=self.ctrl_port)
     self.ctrl.authenticate(password=password)
@@ -37,8 +37,8 @@ class TorRequest(object):
     except:
       return False
 
-  def _launch_tor(self):
-    return launch_tor_with_config(
+  def _launch_tor(self,tor_cmd):
+    return launch_tor_with_config(tor_cmd=tor_cmd,
       config={
         'SocksPort': str(self.proxy_port),
         'ControlPort': str(self.ctrl_port)
