@@ -68,3 +68,6 @@ with TorRequest(proxy_port=9050, ctrl_port=9051, password=None) as tr:
 ## License
 MIT
 
+## Credits
+Erdiaker - [Original torrequest repo](https://github.com/erdiaker/torrequest)
+
