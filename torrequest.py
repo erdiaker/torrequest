@@ -29,6 +29,10 @@ class TorRequest(object):
       'https': 'socks5://localhost:%d' % self.proxy_port,
     })
 
+    self.session.proxies.update({
+       'https': 'socks5h://localhost:%d' % self.proxy_port,
+    })
+
   def _tor_process_exists(self):
     try:
       ctrl = Controller.from_port(port=self.ctrl_port)
@@ -60,7 +64,15 @@ class TorRequest(object):
   def reset_identity_async(self):
     self.ctrl.signal(stem.Signal.NEWNYM)
 
+  def _reset_session(self):
+    self.session = requests.Session()
+    self.session.proxies.update({
+        'http': 'socks5://localhost:%d' % self.proxy_port,
+        'https': 'socks5://localhost:%d' % self.proxy_port,
+    })
+
   def reset_identity(self):
+    self._reset_session()
     self.reset_identity_async()
     time.sleep(self.ctrl.get_newnym_wait())
 
