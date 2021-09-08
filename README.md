@@ -4,7 +4,7 @@ TorRequest
 A simple Python interface for HTTP(s) requests over
 [Tor](https://www.torproject.org). 
 ```python
-from torrequest import TorRequest
+from torrequest-reborn import TorRequest
 
 with TorRequest() as tr:
   response = tr.get('http://ipecho.net/plain')
@@ -19,6 +19,11 @@ You need Tor. It's available via Homebrew.
 ```sh
 brew install tor
 ```
+Or if you're on linux:
+```sh
+sudo apt update
+sudo apt install tor
+```
 
 After installation, you may want to configure Tor by creating a `.torrc` file in your `$HOME` directory. More information is available on [Tor
 documentation](https://www.torproject.org/docs/tor-manual.html.en).
@@ -26,12 +31,12 @@ documentation](https://www.torproject.org/docs/tor-manual.html.en).
 ## Installation
 After installing dependencies, you can install `torrequest` via PyPI:
 ```sh
-pip install torrequest
+pip install torrequest-reborn
 ```
 
 ## Examples
 ```python
-from torrequest import TorRequest
+from torrequest-reborn import TorRequest
 
 # Choose a proxy port, a control port, and a password. 
 # Defaults are 9050, 9051, and None respectively. 
